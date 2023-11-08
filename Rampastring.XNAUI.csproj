@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework Condition="'$(Configuration)' == 'UniversalGLDebug' Or '$(Configuration)' == 'UniversalGLRelease'">net7.0</TargetFramework>
-    <TargetFrameworks Condition="'$(Configuration)' != 'UniversalGLDebug' And '$(Configuration)' != 'UniversalGLRelease'">net7.0-windows;net48</TargetFrameworks>
+    <TargetFrameworks Condition="'$(Configuration)' == 'UniversalGLDebug' Or '$(Configuration)' == 'UniversalGLRelease'">net8.0;net7.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(Configuration)' != 'UniversalGLDebug' And '$(Configuration)' != 'UniversalGLRelease'">net8.0-windows;net7.0-windows;net481;net48</TargetFrameworks>
     <UseWindowsForms Condition="'$(Configuration)' != 'UniversalGLDebug' And '$(Configuration)' != 'UniversalGLRelease'">true</UseWindowsForms>
     <Title Condition="'$(Configuration)' == 'WindowsDXRelease'">Rampastring.XNAUI (WindowsDX)</Title>
     <Title Condition="'$(Configuration)' == 'WindowsGLRelease'">Rampastring.XNAUI (WindowsGL)</Title>
@@ -13,7 +13,7 @@
     <Title Condition="'$(Configuration)' == 'WindowsXNADebug'">Rampastring.XNAUI (XNA Debug Build)</Title>
     <Description>Rampastring XNA/MonoGame UI Library</Description>
     <Company>Rampastring</Company>
-    <Product>Rampastring.XNAUI</Product>
+    <Product>Rampastring.RS.XNAUI</Product>
     <Copyright>Copyright © Rami 'Rampastring' Pasanen 2016-2023</Copyright>
     <Trademark></Trademark>
     <AssemblyName Condition="'$(Configuration)' == 'WindowsDXRelease'">Rampastring.XNAUI.WindowsDX</AssemblyName>
@@ -42,16 +42,16 @@
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeXNAAssemblies</TargetsForTfmSpecificBuildOutput>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludeDesktopGLAssemblies</TargetsForTfmSpecificContentInPackage>
-    <PackageId Condition="'$(Configuration)' == 'WindowsDXRelease'">Rampastring.XNAUI.WindowsDX</PackageId>
-    <PackageId Condition="'$(Configuration)' == 'WindowsGLRelease'">Rampastring.XNAUI.WindowsGL</PackageId>
-    <PackageId Condition="'$(Configuration)' == 'UniversalGLRelease'">Rampastring.XNAUI.UniversalGL</PackageId>
-    <PackageId Condition="'$(Configuration)' == 'WindowsXNARelease'">Rampastring.XNAUI.WindowsXNA</PackageId>
-    <PackageId Condition="'$(Configuration)' == 'WindowsDXDebug'">Rampastring.XNAUI.WindowsDX.Debug</PackageId>
-    <PackageId Condition="'$(Configuration)' == 'WindowsGLDebug'">Rampastring.XNAUI.WindowsGL.Debug</PackageId>
-    <PackageId Condition="'$(Configuration)' == 'UniversalGLDebug'">Rampastring.XNAUI.UniversalGL.Debug</PackageId>
-    <PackageId Condition="'$(Configuration)' == 'WindowsXNADebug'">Rampastring.XNAUI.WindowsXNA.Debug</PackageId>
+    <PackageId Condition="'$(Configuration)' == 'WindowsDXRelease'">Rampastring.RS.XNAUI.WindowsDX</PackageId>
+    <PackageId Condition="'$(Configuration)' == 'WindowsGLRelease'">Rampastring.RS.XNAUI.WindowsGL</PackageId>
+    <PackageId Condition="'$(Configuration)' == 'UniversalGLRelease'">Rampastring.RS.XNAUI.UniversalGL</PackageId>
+    <PackageId Condition="'$(Configuration)' == 'WindowsXNARelease'">Rampastring.RS.XNAUI.WindowsXNA</PackageId>
+    <PackageId Condition="'$(Configuration)' == 'WindowsDXDebug'">Rampastring.RS.XNAUI.WindowsDX.Debug</PackageId>
+    <PackageId Condition="'$(Configuration)' == 'WindowsGLDebug'">Rampastring.RS.XNAUI.WindowsGL.Debug</PackageId>
+    <PackageId Condition="'$(Configuration)' == 'UniversalGLDebug'">Rampastring.RS.XNAUI.UniversalGL.Debug</PackageId>
+    <PackageId Condition="'$(Configuration)' == 'WindowsXNADebug'">Rampastring.RS.XNAUI.WindowsXNA.Debug</PackageId>
     <PackageTags></PackageTags>
-    <PackageProjectUrl>https://github.com/Rampastring/Rampastring.XNAUI</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Rans4ckeR/Rampastring.XNAUI</PackageProjectUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression></PackageLicenseExpression>
     <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
@@ -147,8 +147,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Rampastring.Tools" Version="2.0.5" />
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.18-beta" PrivateAssets="All" />
+    <PackageReference Include="Rampastring.RS.Tools" Version="2.0.1-rs0002" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="TextCopy" Version="6.2.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507">
@@ -160,6 +160,6 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.2" />
   </ItemGroup>
 </Project>
