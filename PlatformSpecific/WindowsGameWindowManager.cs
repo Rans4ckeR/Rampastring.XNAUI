@@ -23,6 +23,7 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
         if (gameForm != null)
         {
             gameForm.FormClosing += GameForm_FormClosing_Event;
+            gameForm.ResizeEnd += GameForm_ClientSizeChanged;
         }
 #endif
     }
@@ -33,12 +34,15 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
     private bool closingPrevented;
 
     public event EventHandler GameWindowClosing;
+    public event EventHandler ClientSizeChanged;
 
 #endif
     private readonly Game game;
 #if WINFORMS
 
     private void GameForm_FormClosing_Event(object sender, FormClosingEventArgs e) => GameWindowClosing?.Invoke(this, EventArgs.Empty);
+
+    private void GameForm_ClientSizeChanged(object sender, EventArgs e) => ClientSizeChanged?.Invoke(this, EventArgs.Empty);
 #endif
 
     /// <summary>
@@ -46,10 +50,22 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
     /// </summary>
     public void CenterOnScreen()
     {
+#if WINFORMS
+        var screen = System.Windows.Forms.Screen.FromHandle(gameForm.Handle);
+        int currentWidth = screen.Bounds.Width;
+        int currentHeight = screen.Bounds.Height;
+        int x = (currentWidth - game.Window.ClientBounds.Width) / 2;
+        int y = (currentHeight - game.Window.ClientBounds.Height) / 2;
+        int screenX = screen.Bounds.X;
+        int screenY = screen.Bounds.Y;
+#else
         int currentWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
         int currentHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
         int x = (currentWidth - game.Window.ClientBounds.Width) / 2;
         int y = (currentHeight - game.Window.ClientBounds.Height) / 2;
+        int screenX = 0;
+        int screenY = 0;
+#endif
 
 #if XNA
         if (gameForm == null)
@@ -57,7 +73,7 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
 
         gameForm.DesktopLocation = new(x, y);
 #else
-        game.Window.Position = new(x, y);
+        game.Window.Position = new(screenX + x, screenY + y);
 #endif
     }
 
@@ -191,6 +207,20 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
     }
 
     public bool HasFocus() => gameForm == null ? game.IsActive : Form.ActiveForm != null;
+
+    public int GetWindowWidth() => gameForm.Width;
+
+    public int GetWindowHeight() => gameForm.Height;
+
+    public void SetFormBorderStyle(FormBorderStyle borderStyle)
+    {
+#if !XNA
+        if (borderStyle != FormBorderStyle.None && game.Window.IsBorderless)
+            throw new ArgumentException("Cannot set form border style when game window has been set to borderless!");
+#endif
+
+        gameForm.FormBorderStyle = borderStyle;
+    }
 #else
     public bool HasFocus() => game.IsActive;
 #endif

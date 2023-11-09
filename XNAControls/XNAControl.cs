@@ -52,6 +52,12 @@ public class XNAControl : DrawableGameComponent
     public event EventHandler MouseRightDown;
 
     /// <summary>
+    /// Raised once when the middle mouse button is pressed down while the
+    /// cursor is inside the control's area.
+    /// </summary>
+    public event EventHandler MouseMiddleDown;
+
+    /// <summary>
     /// Raised when the mouse cursor leaves the control's area.
     /// </summary>
     public event EventHandler MouseLeave;
@@ -89,6 +95,12 @@ public class XNAControl : DrawableGameComponent
     /// while the cursor is inside the control's area.
     /// </summary>
     public event EventHandler RightClick;
+
+    /// <summary>
+    /// Raised when the middle mouse button is clicked (pressed and released)
+    /// while the cursor is inside the control's area.
+    /// </summary>
+    public event EventHandler MiddleClick;
 
     /// <summary>
     /// Raised when the control's client rectangle is changed.
@@ -461,6 +473,7 @@ public class XNAControl : DrawableGameComponent
     private TimeSpan timeSinceLastLeftClick = TimeSpan.Zero;
     private bool isLeftPressedOn;
     private bool isRightPressedOn;
+    private bool isMiddlePressedOn;
 
     private bool isIteratingChildren;
 
@@ -1153,6 +1166,21 @@ public class XNAControl : DrawableGameComponent
                 isRightPressedOn = false;
             }
 
+            if (!isMiddlePressedOn && Cursor.MiddlePressedDown)
+            {
+                isMiddlePressedOn = true;
+
+                if (!isInputCaptured)
+                    OnMouseMiddleDown();
+            }
+            else if (isMiddlePressedOn && Cursor.MiddleClicked)
+            {
+                if (handleClick)
+                    OnMiddleClick();
+
+                isMiddlePressedOn = false;
+            }
+
             if (Cursor.ScrollWheelValue != 0)
             {
                 if (!isInputCaptured)
@@ -1174,6 +1202,9 @@ public class XNAControl : DrawableGameComponent
 
             if (isRightPressedOn && Cursor.RightClicked)
                 isRightPressedOn = false;
+
+            if (isMiddlePressedOn && Cursor.MiddleClicked)
+                isMiddlePressedOn = false;
         }
 
         isIteratingChildren = true;
@@ -1476,6 +1507,12 @@ public class XNAControl : DrawableGameComponent
     public virtual void OnMouseRightDown() => MouseRightDown?.Invoke(this, EventArgs.Empty);
 
     /// <summary>
+    /// Called once when the middle mouse button is pressed down while the cursor
+    /// is on the control.
+    /// </summary>
+    public virtual void OnMouseMiddleDown() => MouseMiddleDown?.Invoke(this, EventArgs.Empty);
+
+    /// <summary>
     /// Called when the left mouse button has been
     /// clicked on the control's client rectangle.
     /// </summary>
@@ -1505,6 +1542,12 @@ public class XNAControl : DrawableGameComponent
     /// clicked on the control's client rectangle.
     /// </summary>
     public virtual void OnRightClick() => RightClick?.Invoke(this, EventArgs.Empty);
+
+    /// <summary>
+    /// Called when the middle mouse button has been 
+    /// clicked on the control's client rectangle.
+    /// </summary>
+    public virtual void OnMiddleClick() => MiddleClick?.Invoke(this, EventArgs.Empty);
 
     /// <summary>
     /// Called when the mouse moves on the control's client rectangle.

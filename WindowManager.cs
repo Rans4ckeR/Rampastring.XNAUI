@@ -50,6 +50,19 @@ public class WindowManager : DrawableGameComponent
     public event EventHandler GameClosing;
 
     /// <summary>
+    /// Raised when the render resolution is changed.
+    /// </summary>
+    public event EventHandler RenderResolutionChanged;
+
+#if WINFORMS
+    /// <summary>
+    /// Raised when the size of the game window has been changed by the user or the operating system.
+    /// This event is not raised by calling <see cref="InitGraphicsMode(int, int, bool)"/>.
+    /// </summary>
+    public event EventHandler WindowSizeChangedByUser;
+
+#endif
+    /// <summary>
     /// The input cursor.
     /// </summary>
     public Input.Cursor Cursor { get; private set; }
@@ -71,12 +84,12 @@ public class WindowManager : DrawableGameComponent
     private readonly object locker = new();
 
     /// <summary>
-    /// Returns the width of the game window.
+    /// Returns the width of the game window, including the window borders.
     /// </summary>
     public int WindowWidth { get; private set; } = 800;
 
     /// <summary>
-    /// Returns the height of the game window.
+    /// Returns the height of the game window, including the window borders.
     /// </summary>
     public int WindowHeight { get; private set; } = 600;
 
@@ -160,6 +173,7 @@ public class WindowManager : DrawableGameComponent
         RenderResolutionY = y;
 
         RecalculateScaling();
+        RenderResolutionChanged?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>
@@ -167,8 +181,11 @@ public class WindowManager : DrawableGameComponent
     /// </summary>
     private void RecalculateScaling()
     {
-        double horizontalRatio = WindowWidth / (double)RenderResolutionX;
-        double verticalRatio = WindowHeight / (double)RenderResolutionY;
+        int clientAreaWidth = Game.Window.ClientBounds.Width;
+        int clientAreaHeight = Game.Window.ClientBounds.Height;
+
+        double horizontalRatio = clientAreaWidth / (double)RenderResolutionX;
+        double verticalRatio = clientAreaHeight / (double)RenderResolutionY;
 
         double ratio;
 
@@ -179,13 +196,13 @@ public class WindowManager : DrawableGameComponent
         {
             ratio = verticalRatio;
             int textureWidth = (int)(RenderResolutionX * ratio);
-            texturePositionX = (WindowWidth - textureWidth) / 2;
+            texturePositionX = (clientAreaWidth - textureWidth) / 2;
         }
         else
         {
             ratio = horizontalRatio;
             int textureHeight = (int)(RenderResolutionY * ratio);
-            texturePositionY = (WindowHeight - textureHeight) / 2;
+            texturePositionY = (clientAreaHeight - textureHeight) / 2;
         }
 
         ScaleRatio = ratio;
@@ -310,6 +327,7 @@ public class WindowManager : DrawableGameComponent
         gameWindowManager = new WindowsGameWindowManager(Game);
 #if WINFORMS
         gameWindowManager.GameWindowClosing += GameWindowManager_GameWindowClosing;
+        gameWindowManager.ClientSizeChanged += GameWindowManager_ClientSizeChanged;
 #else
         Game.Exiting += GameWindowManager_GameWindowClosing;
 #endif
@@ -321,9 +339,28 @@ public class WindowManager : DrawableGameComponent
 #endif
     }
 
+#if WINFORMS
+    private void GameWindowManager_ClientSizeChanged(object sender, EventArgs e)
+    {
+        WindowWidth = gameWindowManager.GetWindowWidth();
+        WindowHeight = gameWindowManager.GetWindowHeight();
+        RecalculateScaling();
+        WindowSizeChangedByUser?.Invoke(this, EventArgs.Empty);
+    }
+
+#endif
     private void GameWindowManager_GameWindowClosing(object sender, EventArgs e)
         => GameClosing?.Invoke(this, EventArgs.Empty);
 
+#if WINFORMS
+    /// <summary>
+    /// Sets the border style of the game form.
+    /// Throws an exception if the application is running in borderless mode.
+    /// </summary>
+    /// <param name="formBorderStyle">The form border style to apply.</param>
+    public void SetFormBorderStyle(FormBorderStyle formBorderStyle) => gameWindowManager.SetFormBorderStyle(formBorderStyle);
+
+#endif
     /// <summary>
     /// Schedules a delegate to be executed on the next game loop frame,
     /// on the main game thread.
@@ -496,11 +533,19 @@ public class WindowManager : DrawableGameComponent
             if ((width <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
                 && (height <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height))
             {
+#if WINFORMS
+                gameWindowManager.ClientSizeChanged -= GameWindowManager_ClientSizeChanged;
+#endif
                 graphics.PreferredBackBufferWidth = width;
                 graphics.PreferredBackBufferHeight = height;
                 graphics.IsFullScreen = false;
                 graphics.ApplyChanges();
                 RecalculateScaling();
+
+#if WINFORMS
+                gameWindowManager.ClientSizeChanged += GameWindowManager_ClientSizeChanged;
+
+#endif
                 return true;
             }
         }
@@ -516,11 +561,19 @@ public class WindowManager : DrawableGameComponent
                 if ((dm.Width == width) && (dm.Height == height))
                 {
                     // The mode is supported, so set the buffer formats, apply changes and return
+#if WINFORMS
+                    gameWindowManager.ClientSizeChanged -= GameWindowManager_ClientSizeChanged;
+#endif
                     graphics.PreferredBackBufferWidth = width;
                     graphics.PreferredBackBufferHeight = height;
                     graphics.IsFullScreen = true;
                     graphics.ApplyChanges();
                     RecalculateScaling();
+
+#if WINFORMS
+                    gameWindowManager.ClientSizeChanged += GameWindowManager_ClientSizeChanged;
+
+#endif
                     return true;
                 }
             }
@@ -671,8 +724,8 @@ public class WindowManager : DrawableGameComponent
             new(
                 SceneXPosition,
                 SceneYPosition,
-                WindowWidth - (SceneXPosition * 2),
-                WindowHeight - (SceneYPosition * 2)),
+                Game.Window.ClientBounds.Width - (SceneXPosition * 2),
+                Game.Window.ClientBounds.Height - (SceneYPosition * 2)),
             Color.White);
 
 #if DEBUG
