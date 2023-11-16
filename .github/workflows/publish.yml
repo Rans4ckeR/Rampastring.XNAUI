@@ -74,6 +74,8 @@ jobs:
       uses: actions/download-artifact@main
       with:
         path: ./artifacts
+    - name: List
+      run: dir /s
     - name: Release
       run: gh release create v${{ env.SemVer }} (Get-Item artifacts\*.*nupkg) --generate-notes --target ${{ env.Sha }} ${{ env.PreReleaseTag != '' && '--prerelease' || '' }}
       env:
