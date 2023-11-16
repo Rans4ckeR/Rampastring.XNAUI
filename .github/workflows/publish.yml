@@ -11,6 +11,7 @@ jobs:
       AssemblySemVer: ${{ steps.gitversion.outputs.AssemblySemVer }}
       AssemblySemFileVer: ${{ steps.gitversion.outputs.AssemblySemFileVer }}
       InformationalVersion: ${{ steps.gitversion.outputs.InformationalVersion }}
+      NuGetVersionV2: ${{ steps.gitversion.outputs.NuGetVersionV2 }}
       SemVer: ${{ steps.gitversion.outputs.SemVer }}
       PreReleaseTag: ${{ steps.gitversion.outputs.PreReleaseTag }}
       Sha: ${{ steps.gitversion.outputs.Sha }}
@@ -33,6 +34,7 @@ jobs:
       AssemblySemVer: ${{ needs.calculate-version.outputs.AssemblySemVer }}
       AssemblySemFileVer: ${{ needs.calculate-version.outputs.AssemblySemFileVer }}
       InformationalVersion: ${{ needs.calculate-version.outputs.InformationalVersion }}
+      NuGetVersionV2: ${{ needs.calculate-version.outputs.NuGetVersionV2 }}
       SemVer: ${{ needs.calculate-version.outputs.SemVer }}
       Sha: ${{ needs.calculate-version.outputs.Sha }}
       PlatformTarget: ''
@@ -50,7 +52,7 @@ jobs:
       with:
         dotnet-version: '8.x.x'
     - name: Pack
-      run: dotnet pack Rampastring.XNAUI.csproj -c ${{ matrix.target }}${{ matrix.configuration }} ${{ env.target == 'WindowsXNA' && '-p:PlatformTarget=x86' || '' }} -p:AssemblyVersion=$env:GitVersion_AssemblySemVer -p:FileVersion=$env:GitVersion_AssemblySemFileVer -p:InformationalVersion=$env:GitVersion_InformationalVersion -p:PackageVersion=$env:GitVersion_NuGetVersionV2
+      run: dotnet pack Rampastring.XNAUI.csproj -c ${{ matrix.target }}${{ matrix.configuration }} ${{ env.target == 'WindowsXNA' && '-p:PlatformTarget=x86' || '' }} -p:AssemblyVersion=${{env.AssemblySemVer}} -p:FileVersion=${{env.AssemblySemFileVer}} -p:InformationalVersion=${{env.InformationalVersion}} -p:PackageVersion=${{env.NuGetVersionV2}}
     - name: Upload Artifacts
       uses: actions/upload-artifact@main
       with:
