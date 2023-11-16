@@ -52,7 +52,7 @@ jobs:
       with:
         dotnet-version: '8.x.x'
     - name: Pack
-      run: dotnet pack Rampastring.XNAUI.csproj -c ${{ matrix.target }}${{ matrix.configuration }} ${{ env.target == 'WindowsXNA' && '-p:PlatformTarget=x86' || '' }} -p:AssemblyVersion=${{env.AssemblySemVer}} -p:FileVersion=${{env.AssemblySemFileVer}} -p:InformationalVersion=${{env.InformationalVersion}} -p:PackageVersion=${{env.NuGetVersionV2}}
+      run: dotnet pack Rampastring.XNAUI.csproj -c ${{ matrix.target }}${{ matrix.configuration }} ${{ env.target != 'WindowsXNA' && '' || '-p:PlatformTarget=x86' }} -p:AssemblyVersion=${{env.AssemblySemVer}} -p:FileVersion=${{env.AssemblySemFileVer}} -p:InformationalVersion=${{env.InformationalVersion}} -p:PackageVersion=${{env.NuGetVersionV2}}
     - name: Upload Artifacts
       uses: actions/upload-artifact@main
       with:
