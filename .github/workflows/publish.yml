@@ -72,11 +72,7 @@ jobs:
         ref: ${{ env.Sha }}
     - name: Download Artifacts
       uses: actions/download-artifact@main
-      with:
-        path: ./artifacts
-    - name: List
-      run: Get-ChildItem -Recurse
     - name: Release
-      run: gh release create v${{ env.SemVer }} (Get-Item artifacts\*.*nupkg) --generate-notes --target ${{ env.Sha }} ${{ env.PreReleaseTag != '' && '--prerelease' || '' }}
+      run: gh release create v${{ env.SemVer }} (Get-Item artifact\*\*.*nupkg) --generate-notes --target ${{ env.Sha }} ${{ env.PreReleaseTag != '' && '--prerelease' || '' }}
       env:
         GH_TOKEN: ${{ github.token }}
