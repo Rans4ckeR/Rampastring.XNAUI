@@ -75,7 +75,7 @@ jobs:
       with:
         path: ./artifacts
     - name: List
-      run: dir /s
+      run: Get-ChildItem -Recurse
     - name: Release
       run: gh release create v${{ env.SemVer }} (Get-Item artifacts\*.*nupkg) --generate-notes --target ${{ env.Sha }} ${{ env.PreReleaseTag != '' && '--prerelease' || '' }}
       env:
