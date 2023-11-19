@@ -1,10 +1,10 @@
 ﻿namespace Rampastring.XNAUI.PlatformSpecific;
 
-#if WINFORMS
 using System;
+#if WINFORMS
 using System.Windows.Forms;
-
 #endif
+
 internal interface IGameWindowManager
 {
 #if WINFORMS
@@ -18,8 +18,6 @@ internal interface IGameWindowManager
     [System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
 #endif
     void FlashWindow();
-
-    IntPtr GetWindowHandle();
 
     void HideWindow();
 
@@ -42,6 +40,8 @@ internal interface IGameWindowManager
     void SetFormBorderStyle(FormBorderStyle borderStyle);
 
 #endif
+    IntPtr GetWindowHandle();
+
     bool HasFocus();
 
     void CenterOnScreen();

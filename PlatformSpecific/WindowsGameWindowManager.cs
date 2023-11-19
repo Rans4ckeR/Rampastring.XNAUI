@@ -1,9 +1,10 @@
 ﻿namespace Rampastring.XNAUI.PlatformSpecific;
 
+using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #if WINFORMS
-using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Rampastring.Tools;
@@ -89,6 +90,17 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
         => gameForm.FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.FixedSingle;
 #endif
 
+    /// <summary>
+    /// Returns the IntPtr handle of the game window on Windows.
+    /// On other platforms, returns IntPtr.Zero.
+    /// </summary>
+    public IntPtr GetWindowHandle()
+#if WINFORMS
+        => gameForm?.Handle ?? IntPtr.Zero;
+#else
+        => Process.GetCurrentProcess().MainWindowHandle;
+#endif
+
 #if WINFORMS
     /// <summary>
     /// Minimizes the game window.
@@ -160,12 +172,6 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
 
         gameForm.Icon = Icon.ExtractAssociatedIcon(SafePath.GetFile(path).FullName);
     }
-
-    /// <summary>
-    /// Returns the IntPtr handle of the game window on Windows.
-    /// On other platforms, returns IntPtr.Zero.
-    /// </summary>
-    public IntPtr GetWindowHandle() => gameForm?.Handle ?? IntPtr.Zero;
 
     /// <summary>
     /// Enables or disables the "control box" (minimize/maximize/close buttons) for the game form.

@@ -468,12 +468,6 @@ public class WindowManager : DrawableGameComponent
     public void SetIcon(string path) => gameWindowManager.SetIcon(path);
 
     /// <summary>
-    /// Returns the IntPtr handle of the game window on Windows.
-    /// On other platforms, returns IntPtr.Zero.
-    /// </summary>
-    public IntPtr GetWindowHandle() => gameWindowManager.GetWindowHandle();
-
-    /// <summary>
     /// Enables or disables the "control box" (minimize/maximize/close buttons) for the game form.
     /// </summary>
     /// <param name="value">True to enable the control box, false to disable it.</param>
@@ -489,6 +483,12 @@ public class WindowManager : DrawableGameComponent
     /// </summary>
     public void AllowClosing() => gameWindowManager.AllowClosing();
 #endif
+
+    /// <summary>
+    /// Returns the IntPtr handle of the game window on Windows.
+    /// On other platforms, returns IntPtr.Zero.
+    /// </summary>
+    public IntPtr GetWindowHandle() => gameWindowManager.GetWindowHandle();
 
     /// <summary>
     /// Removes a control from the window manager.
