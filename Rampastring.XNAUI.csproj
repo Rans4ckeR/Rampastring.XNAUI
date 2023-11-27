@@ -96,16 +96,16 @@
         <PackagePath>runtimes\win-x86\native\soft_oal.dll</PackagePath>
       </TfmSpecificPackageFile>
       <TfmSpecificPackageFile Include="build\GL.targets" Condition="!$(DefineConstants.Contains('DEBUG')) And $(DefineConstants.Contains('WINFORMS'))">
-        <PackagePath>build\Rampastring.XNAUI.WindowsGL.targets</PackagePath>
+        <PackagePath>build\Rampastring.RS.XNAUI.WindowsGL.targets</PackagePath>
       </TfmSpecificPackageFile>
       <TfmSpecificPackageFile Include="build\GL.targets" Condition="$(DefineConstants.Contains('DEBUG')) And $(DefineConstants.Contains('WINFORMS'))">
-        <PackagePath>build\Rampastring.XNAUI.WindowsGL.Debug.targets</PackagePath>
+        <PackagePath>build\Rampastring.RS.XNAUI.WindowsGL.Debug.targets</PackagePath>
       </TfmSpecificPackageFile>
       <TfmSpecificPackageFile Include="build\GL.targets" Condition="!$(DefineConstants.Contains('DEBUG')) And $(DefineConstants.Contains('WINFORMS'))">
-        <PackagePath>buildTransitive\Rampastring.XNAUI.WindowsGL.targets</PackagePath>
+        <PackagePath>buildTransitive\Rampastring.RS.XNAUI.WindowsGL.targets</PackagePath>
       </TfmSpecificPackageFile>
       <TfmSpecificPackageFile Include="build\GL.targets" Condition="$(DefineConstants.Contains('DEBUG')) And $(DefineConstants.Contains('WINFORMS'))">
-        <PackagePath>buildTransitive\Rampastring.XNAUI.WindowsGL.Debug.targets</PackagePath>
+        <PackagePath>buildTransitive\Rampastring.RS.XNAUI.WindowsGL.Debug.targets</PackagePath>
       </TfmSpecificPackageFile>
     </ItemGroup>
   </Target>
