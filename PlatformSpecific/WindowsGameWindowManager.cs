@@ -51,7 +51,7 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
     /// </summary>
     public void CenterOnScreen()
     {
-#if WINFORMS
+#if WINFORMS && !GL
         var screen = System.Windows.Forms.Screen.FromHandle(gameForm.Handle);
         int currentWidth = screen.Bounds.Width;
         int currentHeight = screen.Bounds.Height;
