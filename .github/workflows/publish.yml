@@ -77,8 +77,8 @@ jobs:
         path: artifacts
         merge-multiple: true
     - name: Push
-      run: dotnet nuget push artifacts\*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push artifacts\*\*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
     - name: Release
-      run: gh release create v${{ env.SemVer }} (Get-Item artifacts\*.*nupkg) --generate-notes --target ${{ env.Sha }} ${{ env.PreReleaseTag != '' && '--prerelease' || '' }}
+      run: gh release create v${{ env.SemVer }} (Get-Item artifacts\*\*.*nupkg) --generate-notes --target ${{ env.Sha }} ${{ env.PreReleaseTag != '' && '--prerelease' || '' }}
       env:
         GH_TOKEN: ${{ github.token }}
