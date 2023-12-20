@@ -22,9 +22,9 @@ public class XNATextRenderer : XNAControl
 
     public int SpaceBetweenLines { get; set; }
 
-    private readonly List<XNATextPart> originalTextParts = new();
+    private readonly List<XNATextPart> originalTextParts = [];
 
-    private readonly List<XNATextLine> renderedTextLines = new();
+    private readonly List<XNATextLine> renderedTextLines = [];
 
     public void AddTextPart(XNATextPart text) => originalTextParts.Add(text);
 
@@ -52,7 +52,7 @@ public class XNATextRenderer : XNAControl
     {
         renderedTextLines.Clear();
 
-        var line = new XNATextLine(new());
+        var line = new XNATextLine([]);
         renderedTextLines.Add(line);
 
         int remainingWidth = Width - (Padding * 2);
@@ -69,7 +69,7 @@ public class XNATextRenderer : XNAControl
                     string newLineText = string.Empty;
                     if (remainingText.SafeSubstring(Environment.NewLine.Length).StartsWith(Environment.NewLine, StringComparison.InvariantCulture))
                         newLineText = " ";
-                    line = new(new() { new(newLineText, textPart.FontIndex, textPart.Scale, textPart.Color, textPart.Underlined) });
+                    line = new([new(newLineText, textPart.FontIndex, textPart.Scale, textPart.Color, textPart.Underlined)]);
                     renderedTextLines.Add(line);
                     remainingText = remainingText.SafeSubstring(Environment.NewLine.Length);
                     remainingWidth = Width - (Padding * 2);
@@ -94,7 +94,7 @@ public class XNATextRenderer : XNAControl
 
                         remainingWidth = Width - (Padding * 2) - wordWidthWithSpace;
                         currentOutputPart = new(wordWithSpace, textPart.FontIndex, textPart.Scale, textPart.Color, textPart.Underlined);
-                        line = new(new());
+                        line = new([]);
                         renderedTextLines.Add(line);
                     }
                 }

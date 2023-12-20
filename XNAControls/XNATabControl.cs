@@ -57,7 +57,7 @@ public class XNATabControl : XNAControl
         set => _textColorDisabled = value;
     }
 
-    private readonly List<Tab> tabs = new();
+    private readonly List<Tab> tabs = [];
 
     public EnhancedSoundEffect ClickSound { get; set; }
 

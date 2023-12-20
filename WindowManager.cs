@@ -77,9 +77,9 @@ public class WindowManager : DrawableGameComponent
     /// </summary>
     public SoundPlayer SoundPlayer { get; private set; }
 
-    private List<XNAControl> controls = new();
+    private List<XNAControl> controls = [];
 
-    private List<Callback> callbacks = new();
+    private List<Callback> callbacks = [];
 
     private readonly object locker = new();
 
@@ -148,7 +148,7 @@ public class WindowManager : DrawableGameComponent
     /// Allows extending the control INI attribute parsing
     /// system with custom INI keys.
     /// </summary>
-    public List<IControlINIAttributeParser> ControlINIAttributeParsers { get; } = new();
+    public List<IControlINIAttributeParser> ControlINIAttributeParsers { get; } = [];
 
     private readonly GraphicsDeviceManager graphics;
 
@@ -351,16 +351,16 @@ public class WindowManager : DrawableGameComponent
 #endif
     private void GameWindowManager_GameWindowClosing(object sender, EventArgs e)
         => GameClosing?.Invoke(this, EventArgs.Empty);
-
 #if WINFORMS
+
     /// <summary>
     /// Sets the border style of the game form.
     /// Throws an exception if the application is running in borderless mode.
     /// </summary>
     /// <param name="formBorderStyle">The form border style to apply.</param>
     public void SetFormBorderStyle(FormBorderStyle formBorderStyle) => gameWindowManager.SetFormBorderStyle(formBorderStyle);
-
 #endif
+
     /// <summary>
     /// Schedules a delegate to be executed on the next game loop frame,
     /// on the main game thread.
@@ -601,7 +601,7 @@ public class WindowManager : DrawableGameComponent
             if (callbacks.Count > 0)
             {
                 List<Callback> callbacksCopy = callbacks;
-                callbacks = new();
+                callbacks = [];
 
                 foreach (Callback c in callbacksCopy)
                     c.Invoke();

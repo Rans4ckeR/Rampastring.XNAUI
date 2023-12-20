@@ -17,7 +17,7 @@ public class SoundPlayer : GameComponent
     public SoundPlayer(Game game)
         : base(game)
     {
-        soundList = new();
+        soundList = [];
     }
 
     private static List<PrioritizedSoundInstance> soundList;

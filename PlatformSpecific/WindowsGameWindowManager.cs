@@ -35,6 +35,7 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
     private bool closingPrevented;
 
     public event EventHandler GameWindowClosing;
+
     public event EventHandler ClientSizeChanged;
 
 #endif

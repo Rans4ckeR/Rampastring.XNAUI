@@ -23,7 +23,7 @@ public static class Renderer
 
     private static Texture2D whitePixelTexture;
 
-    private static readonly LinkedList<SpriteBatchSettings> settingStack = new();
+    private static readonly LinkedList<SpriteBatchSettings> settingStack = [];
 
     internal static SpriteBatchSettings CurrentSettings;
 
@@ -32,7 +32,7 @@ public static class Renderer
     public static void Initialize(GraphicsDevice gd, ContentManager content)
     {
         spriteBatch = new(gd);
-        fonts = new();
+        fonts = [];
         LoadFonts(content);
 
         whitePixelTexture = AssetLoader.CreateTexture(Color.White, 1, 1);
@@ -45,7 +45,7 @@ public static class Renderer
     public static void LoadFonts(ContentManager contentManager)
     {
         if (fonts == null)
-            fonts = new();
+            fonts = [];
         else
             fonts.Clear();
 

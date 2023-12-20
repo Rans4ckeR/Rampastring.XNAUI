@@ -11,8 +11,8 @@ using Rampastring.XNAUI.XNAControls;
 /// </summary>
 public class GUICreator
 {
-    private readonly List<Type> controlTypes = new()
-    {
+    private readonly List<Type> controlTypes =
+    [
         typeof(XNAControl),
         typeof(XNAButton),
         typeof(XNACheckBox),
@@ -26,7 +26,7 @@ public class GUICreator
         typeof(XNASuggestionTextBox),
         typeof(XNATextBox),
         typeof(XNATrackbar)
-    };
+    ];
 
     /// <summary>
     /// Adds a control type to the list of available control types.

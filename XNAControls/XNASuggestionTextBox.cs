@@ -1,4 +1,5 @@
 ﻿namespace Rampastring.XNAUI.XNAControls;
+
 using Microsoft.Xna.Framework;
 using Rampastring.Tools;
 

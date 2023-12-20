@@ -59,8 +59,8 @@ public class XNAMultiColumnListBox : XNAPanel
 
     public bool DrawListBoxBorders { get; set; }
 
-    private readonly List<XNAListBox> listBoxes = new();
-    private readonly List<XNAPanel> headers = new();
+    private readonly List<XNAListBox> listBoxes = [];
+    private readonly List<XNAPanel> headers = [];
     private bool handleSelectedIndexChanged = true;
 
     /// <summary>

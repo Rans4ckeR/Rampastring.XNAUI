@@ -70,7 +70,7 @@ public class XNAListBox : XNAPanel
     /// or you risk leaking memory.
     /// TODO change to ObservableCollection?.
     /// </summary>
-    public readonly List<XNAListBoxItem> Items = new();
+    public readonly List<XNAListBoxItem> Items = [];
 
     private Color? _focusColor;
 

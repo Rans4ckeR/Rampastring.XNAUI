@@ -14,7 +14,7 @@ public class RKeyboard : GameComponent
     public RKeyboard(Game game)
         : base(game)
     {
-        PressedKeys = new();
+        PressedKeys = [];
         KeyboardState = Keyboard.GetState();
     }
 

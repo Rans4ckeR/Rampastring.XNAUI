@@ -13,7 +13,7 @@ public class RenderTargetPool
 
     private static readonly object locker = new();
 
-    private readonly List<RenderTarget2D> renderTargets = new();
+    private readonly List<RenderTarget2D> renderTargets = [];
 
     public RenderTargetPool(GraphicsDevice graphicsDevice)
     {

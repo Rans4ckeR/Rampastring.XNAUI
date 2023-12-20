@@ -172,13 +172,13 @@ public class XNAControl : DrawableGameComponent
     /// A list of the control's children. Don't add children to this list directly;
     /// call the AddChild method instead.
     /// </summary>
-    private readonly List<XNAControl> children = new();
+    private readonly List<XNAControl> children = [];
 
-    private List<XNAControl> updateList = new();
-    private List<XNAControl> drawList = new();
+    private List<XNAControl> updateList = [];
+    private List<XNAControl> drawList = [];
 
-    private readonly List<XNAControl> childAddQueue = new();
-    private readonly List<XNAControl> childRemoveQueue = new();
+    private readonly List<XNAControl> childAddQueue = [];
+    private readonly List<XNAControl> childRemoveQueue = [];
 
     /// <summary>
     /// A read-only list of the control's children.
@@ -686,7 +686,7 @@ public class XNAControl : DrawableGameComponent
 
     private readonly object locker = new();
 
-    private readonly List<Callback> callbacks = new();
+    private readonly List<Callback> callbacks = [];
 
     /// <summary>
     /// Schedules a delegate to be executed on the next game loop frame,

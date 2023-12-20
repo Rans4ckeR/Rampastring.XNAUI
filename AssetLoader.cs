@@ -45,9 +45,9 @@ public static class AssetLoader
         IsInitialized = true;
 
         graphicsDevice = gd;
-        AssetSearchPaths = new();
-        textureCache = new();
-        soundCache = new();
+        AssetSearchPaths = [];
+        textureCache = [];
+        soundCache = [];
         contentManager = content;
     }
 

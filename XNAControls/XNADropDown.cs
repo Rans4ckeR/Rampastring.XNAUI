@@ -35,7 +35,7 @@ public class XNADropDown : XNAControl
     /// </summary>
     public int ItemHeight { get; set; } = 17;
 
-    public readonly List<XNADropDownItem> Items = new();
+    public readonly List<XNADropDownItem> Items = [];
 
     /// <summary>
     /// Gets the dropped-down status of the drop-down control.
