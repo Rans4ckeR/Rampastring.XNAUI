@@ -3,11 +3,12 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 #if WINFORMS
 using System.Drawing;
 using System.Windows.Forms;
 using Rampastring.Tools;
+#else
+using Microsoft.Xna.Framework.Graphics;
 #endif
 
 /// <summary>
@@ -18,6 +19,7 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
     public WindowsGameWindowManager(Game game)
     {
         this.game = game;
+        this.game.Window.ClientSizeChanged += GameForm_ClientSizeChanged;
 #if WINFORMS
         gameForm = (Form)Control.FromHandle(game.Window.Handle);
 
@@ -35,17 +37,17 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
     private bool closingPrevented;
 
     public event EventHandler GameWindowClosing;
+#endif
 
     public event EventHandler ClientSizeChanged;
 
-#endif
     private readonly Game game;
 #if WINFORMS
 
     private void GameForm_FormClosing_Event(object sender, FormClosingEventArgs e) => GameWindowClosing?.Invoke(this, EventArgs.Empty);
+#endif
 
     private void GameForm_ClientSizeChanged(object sender, EventArgs e) => ClientSizeChanged?.Invoke(this, EventArgs.Empty);
-#endif
 
     /// <summary>
     /// Centers the game window on the screen.
@@ -175,6 +177,15 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
     }
 
     /// <summary>
+    /// Enables or disables the "maximize box" for the game form.
+    /// </summary>
+    public void SetMaximizeBox(bool value)
+    {
+        if (gameForm != null)
+            gameForm.MaximizeBox = value;
+    }
+
+    /// <summary>
     /// Enables or disables the "control box" (minimize/maximize/close buttons) for the game form.
     /// </summary>
     /// <param name="value">True to enable the control box, false to disable it.</param>
@@ -226,7 +237,8 @@ internal sealed class WindowsGameWindowManager : IGameWindowManager
             throw new ArgumentException("Cannot set form border style when game window has been set to borderless!");
 #endif
 
-        gameForm.FormBorderStyle = borderStyle;
+        if (gameForm != null)
+            gameForm.FormBorderStyle = borderStyle;
     }
 #else
     public bool HasFocus() => game.IsActive;

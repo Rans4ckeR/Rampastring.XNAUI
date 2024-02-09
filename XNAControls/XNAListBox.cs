@@ -472,7 +472,10 @@ public class XNAListBox : XNAPanel
         int lineCount = 0;
 
         foreach (XNAListBoxItem item in Items)
-            lineCount += item.TextLines.Count;
+        {
+            if (item.Visible)
+                lineCount += item.TextLines.Count;
+        }
 
         return lineCount;
     }
@@ -687,6 +690,9 @@ public class XNAListBox : XNAPanel
 
         for (int i = SelectedIndex - 1; i > -1; i--)
         {
+            if (!Items[i].Visible)
+                continue;
+
             if (Items[i].Selectable)
             {
                 SelectedIndex = i;
@@ -708,6 +714,9 @@ public class XNAListBox : XNAPanel
     {
         for (int i = SelectedIndex + 1; i < Items.Count; i++)
         {
+            if (!Items[i].Visible)
+                continue;
+
             if (Items[i].Selectable)
             {
                 SelectedIndex = i;
@@ -840,6 +849,9 @@ public class XNAListBox : XNAPanel
         {
             XNAListBoxItem item = Items[i];
 
+            if (!item.Visible)
+                continue;
+
             height += item.TextLines.Count * LineHeight;
 
             if (height > mouseLocation.Y)
@@ -950,6 +962,9 @@ public class XNAListBox : XNAPanel
         for (int i = drawInfo.TopIndex; i < Items.Count; i++)
         {
             XNAListBoxItem item = Items[i];
+
+            if (!item.Visible)
+                continue;
 
             DrawListBoxItem(i, height);
 

@@ -27,6 +27,8 @@ internal interface IGameWindowManager
 
     void PreventClosing();
 
+    void SetMaximizeBox(bool value);
+
     void SetControlBox(bool value);
 
     void SetIcon(string path);
