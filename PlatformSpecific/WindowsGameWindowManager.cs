@@ -1,13 +1,15 @@
 ﻿namespace Rampastring.XNAUI.PlatformSpecific;
 
 using System;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 #if WINFORMS
 using System.Drawing;
 using System.Windows.Forms;
 using Rampastring.Tools;
 #else
+using System.Diagnostics;
+#endif
+#if GL
 using Microsoft.Xna.Framework.Graphics;
 #endif
 
